@@ -8,21 +8,27 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
-        """Returns a dictionary of models currently in storage"""
+    def all(self, cls=None):
+        """Returns a dictionary or list of models currently in storage"""
+        if cls:
+            return {key: obj for key, obj in FileStorage.__objects.items() if isinstance(obj, cls)}
         return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        key = obj.to_dict()['__class__'] + '.' + obj.id
+        self.all()[key] = obj
+
+    def delete(self, obj=None):
+        """Deletes object from storage dictionary if it exists"""
+        if obj:
+            key = obj.to_dict()['__class__'] + '.' + obj.id
+            self.all().pop(key, None)
 
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
+            temp = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
             json.dump(temp, f)
 
     def reload(self):
@@ -36,15 +42,16 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
+
