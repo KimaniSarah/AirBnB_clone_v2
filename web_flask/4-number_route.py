@@ -30,12 +30,9 @@ def display_python(text="is_cool"):
 
 
 @app.route("/number/<int:n>", strict_slashes=False)
-@app.route("/number", strict_slashes=False)
-def display_num(n=None):
-    if n is not None and isinstance(n, int):
+def display_num(n):
+    if isinstance(n, int):
         return f"{n} is a number"
-    else:
-        return f"{n} is not a number"
 
 
 if __name__ == "__main__":
