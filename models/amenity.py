@@ -1,30 +1,23 @@
 #!/usr/bin/python3
-"""This is the review class"""
+"""This is the amenity class"""
 import os
-from models.base_model import BaseModel, Base, Column, String
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
+from models.place import place_amenity
 
 
-class Review(BaseModel, Base):
-    """This is the class for Review
+class Amenity(BaseModel, Base):
+    """This is the class for Amenity
     Attributes:
-        place_id: place id
-        user_id: user id
-        text: review description
+        name: input name
     """
-    __tablename__ = 'reviews'
 
+    __tablename__ = 'amenities'
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        text = Column(String(1024), nullable=False)
-        place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
-        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
-        user = relationship(
-            'User', back_populates='reviews')  # cascade? slave
-        place = relationship(
-            'Place', back_populates='reviews')  # cascade? slave
-
+        name = Column(String(128), nullable=False)
+        place_amenities = relationship('Place',
+                                       secondary=place_amenity,
+                                       back_populates='amenities')
     else:
-        text = ""
-        place_id = ""
-        user_id = ""
+        name = ""

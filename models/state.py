@@ -6,6 +6,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 
+
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
@@ -24,7 +25,7 @@ class State(BaseModel, Base):
         name = ""
 
         @property
-        def cities(self) -> list[City]:
+        def cities(self):
             """returns list of Cities and some relationships"""
             cities_instances = []
             cities_dict = models.storage.all(models.City)
