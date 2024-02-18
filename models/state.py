@@ -27,9 +27,14 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """returns list of Cities and some relationships"""
-            cities_instances = []
-            cities_dict = models.storage.all(models.City)
-            for key, value in cities_dict.items():
-                if self.id == value.state_id:
-                    cities_instances.append(value)
-            return cities_instances
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                cities_instances = []
+                cities_dict = models.storage.all(models.City)
+                for key, value in cities_dict.items():
+                    if self.id == value.state_id:
+                        cities_instances.append(value)
+                return cities_instances
+            else:
+                return []
+
+
