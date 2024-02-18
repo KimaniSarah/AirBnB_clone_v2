@@ -3,7 +3,7 @@
 import os
 import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
 
@@ -36,5 +36,3 @@ class State(BaseModel, Base):
                 return cities_instances
             else:
                 return []
-
-
