@@ -11,6 +11,12 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from datetime import datetime
+from models.engine.db_storage import DBStorage
+
+
+storage = DBStorage()
+storage.reload()
+
 
 
 class HBNBCommand(cmd.Cmd):

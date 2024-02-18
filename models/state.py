@@ -3,7 +3,7 @@
 import os
 import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 
 
@@ -27,12 +27,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """returns list of Cities and some relationships"""
-            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-                cities_instances = []
-                cities_dict = models.storage.all(models.City)
-                for key, value in cities_dict.items():
-                    if self.id == value.state_id:
-                        cities_instances.append(value)
-                return cities_instances
-            else:
-                return []
+            cities_instances = []
+            cities_dict = models.storage.all(models.City)
+            for key, value in cities_dict.items():
+                if self.id == value.state_id:
+                    cities_instances.append(value)
+            return cities_instances
