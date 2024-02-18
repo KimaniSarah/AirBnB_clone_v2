@@ -355,6 +355,11 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+    def reload(self):
+        """Create tables and current database session"""
+        storage.reload()  # Reload the session and create tables
+        Base.metadata.create_all(storage.__engine)  # Create tables if not exist
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
