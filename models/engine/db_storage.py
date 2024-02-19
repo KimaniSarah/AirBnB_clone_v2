@@ -64,8 +64,8 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """Create tables and current database sessionI"""
-        Base.metadata.create_all(self.__engine)
+        """Create tables and current database sessionI
+        Base.metadata.create_all(self.__engine)"""
 
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
