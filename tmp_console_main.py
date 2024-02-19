@@ -361,3 +361,5 @@ class HBNBCommand(cmd.Cmd):
         Base.metadata.create_all(storage.__engine)  # Create tables if not exist
 
 
+if __name__ == "__main__":
+    HBNBCommand().cmdloop()
